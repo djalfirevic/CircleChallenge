@@ -1,4 +1,4 @@
-# CircleChallenge
+# Circle Challenge
 iOS Coding Challenge, 2021. Circle
 
 Project uses: GitHub API (https://docs.github.com/en/rest/reference/search#search-users).
