@@ -17,8 +17,6 @@ final class MockSearchProviderTests: XCTestCase {
     
     // MARK: - Tests
     func testSearch() {
-        let expectation = expectation(description: "Search expectation")
-        
         searchProvider
             .seachUsers(with: "test", page: 0, count: 1)
             .sink { result in
@@ -30,17 +28,11 @@ final class MockSearchProviderTests: XCTestCase {
                     break
                 }
             } receiveValue: { response in
-                expectation.fulfill()
-                
                 XCTAssert(response.items.count == 1, "Users count should be 1")
                 
                 Logger.log(message: "Fetched \(response.items.count)", type: .debug)
             }
             .store(in: &cancellables)
-        
-        waitForExpectations(timeout: 1.0) { _ in
-            XCTFail("Search Provider failed")
-        }
     }
     
 }
