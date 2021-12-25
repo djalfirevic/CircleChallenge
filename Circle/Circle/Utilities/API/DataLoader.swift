@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
+import Pulse
 
-final class DataLoader {
+final class DataLoader: NSObject {
     fileprivate enum Constants {
         static let timeoutInterval: TimeInterval = 60
         static let memoryCacheSizeMB = 25 * 1024 * 1024
@@ -25,7 +26,10 @@ final class DataLoader {
         configuration.urlCache = cache
         return configuration
     }()
-    private var session = URLSession(configuration: sessionConfiguration)
+    private lazy var session = URLSession(configuration: DataLoader.sessionConfiguration,
+                                          delegate: self,
+                                          delegateQueue: nil)
+    private let logger = NetworkLogger()
     
     // MARK: - Public API
     func decodablePublisher<T: Decodable>(for endpoint: Endpoint) -> AnyPublisher<T, Error> {
@@ -54,7 +58,7 @@ final class DataLoader {
                     switch responseStatus {
                     case .unauthorized:
                         if endpoint.isLoggingEnabled {
-                            Logger.log(message: logBuilder.build(), type: .error)
+                            CircleLogger.log(message: logBuilder.build(), type: .error)
                         }
                         
                         throw APIError.unauthorized
@@ -67,7 +71,7 @@ final class DataLoader {
                 logBuilder.append("Response data: \(string)")
                 
                 if endpoint.isLoggingEnabled {
-                    Logger.log(message: logBuilder.build(), type: .success)
+                    CircleLogger.log(message: logBuilder.build(), type: .success)
                 }
                 
                 let decoder = JSONDecoder()
@@ -77,7 +81,7 @@ final class DataLoader {
                     let object = try decoder.decode(T.self, from: data)
                     
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .success)
+                        CircleLogger.log(message: logBuilder.build(), type: .success)
                     }
                     
                     return object
@@ -85,32 +89,32 @@ final class DataLoader {
                     logBuilder.append("Decoding error: \(String(describing: context))")
 
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                 } catch let DecodingError.keyNotFound(key, context) {
                     logBuilder.append("Key '\(key)' not found: \(context.debugDescription)")
                     logBuilder.append("codingPath: \(context.codingPath)")
 
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                 } catch let DecodingError.valueNotFound(value, context) {
                     logBuilder.append("Value '\(value)' not found: \(context.debugDescription)")
                     logBuilder.append("codingPath: \(context.codingPath)")
 
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                 } catch let DecodingError.typeMismatch(type, context)  {
                     logBuilder.append("Type '\(type)' mismatch: \(context.debugDescription)")
                     logBuilder.append("codingPath: \(context.codingPath)")
 
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                 } catch {
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                 }
                 
@@ -122,7 +126,7 @@ final class DataLoader {
                     logBuilder.append("Error: \(error.localizedDescription)")
                     
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                     
                     return error
@@ -131,7 +135,7 @@ final class DataLoader {
                     logBuilder.append("Error: \(error.localizedDescription)")
                     
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                     
                     return APIError.error(reason: error.localizedDescription)
@@ -163,10 +167,12 @@ final class DataLoader {
                     let responseStatus = ResponseStatus(statusCode: httpResponse.statusCode)
                     logBuilder.append("Status Code: \(httpResponse.statusCode)")
                     
+                    LoggerStore.default.storeRequest(request, response: response, error: nil, data: data, metrics: nil, session: self.session)
+                    
                     switch responseStatus {
                     case .unauthorized:
                         if endpoint.isLoggingEnabled {
-                            Logger.log(message: logBuilder.build(), type: .error)
+                            CircleLogger.log(message: logBuilder.build(), type: .error)
                         }
                         
                         throw APIError.unauthorized
@@ -179,7 +185,7 @@ final class DataLoader {
                 logBuilder.append("Response data: \(string)")
                 
                 if endpoint.isLoggingEnabled {
-                    Logger.log(message: logBuilder.build(), type: .success)
+                    CircleLogger.log(message: logBuilder.build(), type: .success)
                 }
                 
                 return string
@@ -190,7 +196,7 @@ final class DataLoader {
                     logBuilder.append("Error: \(error.localizedDescription)")
                     
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                     
                     return error
@@ -199,7 +205,7 @@ final class DataLoader {
                     logBuilder.append("Error: \(error.localizedDescription)")
                     
                     if endpoint.isLoggingEnabled {
-                        Logger.log(message: logBuilder.build(), type: .error)
+                        CircleLogger.log(message: logBuilder.build(), type: .error)
                     }
                     
                     return APIError.error(reason: error.localizedDescription)
@@ -224,6 +230,27 @@ final class DataLoader {
         request.httpBody = endpoint.body
         
         return request
+    }
+    
+}
+
+extension DataLoader: URLSessionDelegate, URLSessionDataDelegate {
+    
+    // MARK: - URLSessionDelegate
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        logger.logDataTask(dataTask, didReceive: response)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        logger.logTask(task, didCompleteWithError: error)
+    }
+    
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        logger.logDataTask(dataTask, didReceive: data)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        logger.logTask(task, didFinishCollecting: metrics)
     }
     
 }

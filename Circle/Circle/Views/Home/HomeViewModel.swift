@@ -43,7 +43,7 @@ final class HomeViewModel: ObservableObject {
             .sink { result in
                 switch result {
                 case .failure(let error):
-                    Logger.logError(message: "Search Provider", error: error)
+                    CircleLogger.logError(message: "Search Provider", error: error)
                 case .finished:
                     break
                 }
@@ -52,7 +52,7 @@ final class HomeViewModel: ObservableObject {
                 self.page += 1
                 self.hasMoreData = response.items.count == self.itemsPerPage
                 
-                Logger.log(message: "Fetched \(response.items.count)", type: .debug)
+                CircleLogger.log(message: "Fetched \(response.items.count)", type: .debug)
             }
             .store(in: &cancellables)
     }

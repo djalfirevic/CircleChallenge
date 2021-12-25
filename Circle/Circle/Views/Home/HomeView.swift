@@ -9,7 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
-    @State var searchText = ""
+    @State private var searchText = ""
+    @State private var showLogs = false
     
     var body: some View {
         NavigationView {
@@ -36,6 +37,16 @@ struct HomeView: View {
                 }
             }
             .navigationBarTitle(Text("Circle"))
+            .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    Button("Logs") {
+                        showLogs = true
+                    }
+                }
+            }
+            .sheet(isPresented: $showLogs) {
+                LogsView()
+            }
         }
     }
 }

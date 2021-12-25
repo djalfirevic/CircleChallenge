@@ -1,11 +1,12 @@
 //
-//  Logger.swift
+//  CircleLogger.swift
 //  Circle
 //
 //  Created by Djuro on 8/28/21.
 //
 
 import Foundation
+import Logging
 
 enum LogType: String {
     case error = "[🛑]"
@@ -16,9 +17,10 @@ enum LogType: String {
     case success = "[✅]"
 }
 
-final class Logger {
+final class CircleLogger {
     
     // MARK: - Properties
+    static var logger = Logger(label: "com.djuroalfirevic.Circle")
     static var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
@@ -38,6 +40,21 @@ final class Logger {
         
         #if DEBUG
         print("\(Date().formatted()) \(type.rawValue)[\(sourceFileName(filePath: fileName))]: line: \(line), column: \(column) func: \(function) -> \(message)")
+        
+        switch type {
+        case .error:
+            logger.error(.init(stringLiteral: message))
+        case .info:
+            logger.info(.init(stringLiteral: message))
+        case .debug:
+            logger.debug(.init(stringLiteral: message))
+        case .warning:
+            logger.warning(.init(stringLiteral: message))
+        case .fatal:
+            logger.critical(.init(stringLiteral: message))
+        case .success:
+            logger.notice(.init(stringLiteral: message))
+        }
         #endif
     }
     
@@ -51,7 +68,8 @@ final class Logger {
     }
     
     class func logError(message: String, error: Error) {
-        Logger.log(message: "\(message): \(error)", type: .error)
+        CircleLogger.log(message: "\(message): \(error)", type: .error)
+        logger.error(.init(stringLiteral: message))
     }
     
     // MARK: - Private API
@@ -64,6 +82,6 @@ final class Logger {
 
 internal extension Date {
     func formatted() -> String {
-        return Logger.dateFormatter.string(from: self)
+        return CircleLogger.dateFormatter.string(from: self)
     }
 }

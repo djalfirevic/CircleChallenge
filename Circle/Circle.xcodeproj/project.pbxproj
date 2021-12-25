@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,7 @@
 		1A84B24226D9FC65003E3C11 /* CircleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B24126D9FC65003E3C11 /* CircleTests.swift */; };
 		1A84B24D26D9FC65003E3C11 /* CircleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B24C26D9FC65003E3C11 /* CircleUITests.swift */; };
 		1A84B25F26D9FCCE003E3C11 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B25E26D9FCCE003E3C11 /* HomeViewModel.swift */; };
-		1A84B26F26D9FD38003E3C11 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B26226D9FD38003E3C11 /* Logger.swift */; };
+		1A84B26F26D9FD38003E3C11 /* CircleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B26226D9FD38003E3C11 /* CircleLogger.swift */; };
 		1A84B27026D9FD38003E3C11 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B26426D9FD38003E3C11 /* Endpoints.swift */; };
 		1A84B27126D9FD38003E3C11 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B26526D9FD38003E3C11 /* APIError.swift */; };
 		1A84B27226D9FD38003E3C11 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B26626D9FD38003E3C11 /* Reachability.swift */; };
@@ -31,6 +31,10 @@
 		1A84B27E26D9FF48003E3C11 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B27D26D9FF48003E3C11 /* SearchResponse.swift */; };
 		1A84B28126DA03F1003E3C11 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B28026DA03F1003E3C11 /* UIApplication+Extensions.swift */; };
 		1A84B28326DA06ED003E3C11 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A84B28226DA06ED003E3C11 /* SearchView.swift */; };
+		1AB2A84D277747DB00EE4E41 /* Pulse in Frameworks */ = {isa = PBXBuildFile; productRef = 1AB2A84C277747DB00EE4E41 /* Pulse */; };
+		1AB2A84F277747DB00EE4E41 /* PulseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1AB2A84E277747DB00EE4E41 /* PulseCore */; };
+		1AB2A851277747DB00EE4E41 /* PulseUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AB2A850277747DB00EE4E41 /* PulseUI */; };
+		1AB2A8542777495900EE4E41 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB2A8532777495900EE4E41 /* LogsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +70,7 @@
 		1A84B24C26D9FC65003E3C11 /* CircleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleUITests.swift; sourceTree = "<group>"; };
 		1A84B24E26D9FC65003E3C11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A84B25E26D9FCCE003E3C11 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		1A84B26226D9FD38003E3C11 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		1A84B26226D9FD38003E3C11 /* CircleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleLogger.swift; sourceTree = "<group>"; };
 		1A84B26426D9FD38003E3C11 /* Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		1A84B26526D9FD38003E3C11 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		1A84B26626D9FD38003E3C11 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -81,6 +85,7 @@
 		1A84B27D26D9FF48003E3C11 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		1A84B28026DA03F1003E3C11 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		1A84B28226DA06ED003E3C11 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		1AB2A8532777495900EE4E41 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +93,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AB2A851277747DB00EE4E41 /* PulseUI in Frameworks */,
+				1AB2A84D277747DB00EE4E41 /* Pulse in Frameworks */,
+				1AB2A84F277747DB00EE4E41 /* PulseCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				1A84B25D26D9FCC4003E3C11 /* Home */,
+				1AB2A8522777494900EE4E41 /* Logs */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -217,7 +226,7 @@
 			children = (
 				1A84B27F26DA03E6003E3C11 /* Extensions */,
 				1A84B26326D9FD38003E3C11 /* API */,
-				1A84B26226D9FD38003E3C11 /* Logger.swift */,
+				1A84B26226D9FD38003E3C11 /* CircleLogger.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -264,6 +273,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		1AB2A8522777494900EE4E41 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				1AB2A8532777495900EE4E41 /* LogsView.swift */,
+			);
+			path = Logs;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -280,6 +297,11 @@
 			dependencies = (
 			);
 			name = Circle;
+			packageProductDependencies = (
+				1AB2A84C277747DB00EE4E41 /* Pulse */,
+				1AB2A84E277747DB00EE4E41 /* PulseCore */,
+				1AB2A850277747DB00EE4E41 /* PulseUI */,
+			);
 			productName = Circle;
 			productReference = 1A84B22C26D9FC64003E3C11 /* Circle.app */;
 			productType = "com.apple.product-type.application";
@@ -351,6 +373,9 @@
 				Base,
 			);
 			mainGroup = 1A84B22326D9FC64003E3C11;
+			packageReferences = (
+				1AB2A84B277747DB00EE4E41 /* XCRemoteSwiftPackageReference "Pulse" */,
+			);
 			productRefGroup = 1A84B22D26D9FC64003E3C11 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -405,7 +430,8 @@
 				1A84B27326D9FD38003E3C11 /* LogBuilder.swift in Sources */,
 				1A84B28326DA06ED003E3C11 /* SearchView.swift in Sources */,
 				1A84B27B26D9FEFC003E3C11 /* User.swift in Sources */,
-				1A84B26F26D9FD38003E3C11 /* Logger.swift in Sources */,
+				1A84B26F26D9FD38003E3C11 /* CircleLogger.swift in Sources */,
+				1AB2A8542777495900EE4E41 /* LogsView.swift in Sources */,
 				1A84B27026D9FD38003E3C11 /* Endpoints.swift in Sources */,
 				1A84B27426D9FD38003E3C11 /* API.swift in Sources */,
 				1A84B27826D9FD38003E3C11 /* SearchApiService.swift in Sources */,
@@ -726,6 +752,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1AB2A84B277747DB00EE4E41 /* XCRemoteSwiftPackageReference "Pulse" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Pulse";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1AB2A84C277747DB00EE4E41 /* Pulse */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AB2A84B277747DB00EE4E41 /* XCRemoteSwiftPackageReference "Pulse" */;
+			productName = Pulse;
+		};
+		1AB2A84E277747DB00EE4E41 /* PulseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AB2A84B277747DB00EE4E41 /* XCRemoteSwiftPackageReference "Pulse" */;
+			productName = PulseCore;
+		};
+		1AB2A850277747DB00EE4E41 /* PulseUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AB2A84B277747DB00EE4E41 /* XCRemoteSwiftPackageReference "Pulse" */;
+			productName = PulseUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1A84B22426D9FC64003E3C11 /* Project object */;
 }

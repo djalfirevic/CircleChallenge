@@ -22,7 +22,7 @@ final class MockSearchProviderTests: XCTestCase {
             .sink { result in
                 switch result {
                 case .failure(let error):
-                    Logger.logError(message: "Search Provider", error: error)
+                    CircleLogger.logError(message: "Search Provider", error: error)
                     XCTFail("Search Provider failed")
                 case .finished:
                     break
@@ -30,7 +30,7 @@ final class MockSearchProviderTests: XCTestCase {
             } receiveValue: { response in
                 XCTAssert(response.items.count == 1, "Users count should be 1")
                 
-                Logger.log(message: "Fetched \(response.items.count)", type: .debug)
+                CircleLogger.log(message: "Fetched \(response.items.count)", type: .debug)
             }
             .store(in: &cancellables)
     }
