@@ -26,9 +26,7 @@ final class DataLoader: NSObject {
         configuration.urlCache = cache
         return configuration
     }()
-    private lazy var session = URLSession(configuration: DataLoader.sessionConfiguration,
-                                          delegate: self,
-                                          delegateQueue: nil)
+    private var session = URLSession(configuration: sessionConfiguration)
     private let logger = NetworkLogger()
     
     // MARK: - Public API
@@ -54,6 +52,8 @@ final class DataLoader: NSObject {
                 if let httpResponse = response as? HTTPURLResponse {
                     let responseStatus = ResponseStatus(statusCode: httpResponse.statusCode)
                     logBuilder.append("Status Code: \(httpResponse.statusCode)")
+                    
+                    LoggerStore.default.storeRequest(request, response: response, error: nil, data: data, metrics: nil)
                     
                     switch responseStatus {
                     case .unauthorized:
@@ -167,7 +167,7 @@ final class DataLoader: NSObject {
                     let responseStatus = ResponseStatus(statusCode: httpResponse.statusCode)
                     logBuilder.append("Status Code: \(httpResponse.statusCode)")
                     
-                    LoggerStore.default.storeRequest(request, response: response, error: nil, data: data, metrics: nil, session: self.session)
+                    LoggerStore.default.storeRequest(request, response: response, error: nil, data: data, metrics: nil)
                     
                     switch responseStatus {
                     case .unauthorized:
@@ -230,27 +230,6 @@ final class DataLoader: NSObject {
         request.httpBody = endpoint.body
         
         return request
-    }
-    
-}
-
-extension DataLoader: URLSessionDelegate, URLSessionDataDelegate {
-    
-    // MARK: - URLSessionDelegate
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        logger.logDataTask(dataTask, didReceive: response)
-    }
-    
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        logger.logTask(task, didCompleteWithError: error)
-    }
-    
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        logger.logDataTask(dataTask, didReceive: data)
-    }
-    
-    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
-        logger.logTask(task, didFinishCollecting: metrics)
     }
     
 }
